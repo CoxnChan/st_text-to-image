@@ -4,7 +4,7 @@ script.src = 'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.m
 document.head.appendChild(script);
 
 // 等待CryptoJS加载完成
-var checkCryptoJS = setInterval(function() {
+var checkCryptoJS = setInterval(function () {
     if (typeof CryptoJS !== 'undefined') {
         clearInterval(checkCryptoJS);
         initScript();
@@ -858,10 +858,7 @@ var checkCryptoJS = setInterval(function() {
         panel.style.top = '50%';
         panel.style.left = '50%';
         panel.style.transform = 'translate(-50%, -50%)';
-        panel.style.backgroundColor = 'black';  // 设置背景为黑色
-        panel.style.color = 'white';// 设置字体为白色
         panel.style.padding = '20px';
-        panel.style.border = '1px solid white';// 设置边框为白色
         panel.style.zIndex = '99997';
         panel.style.display = 'none';
         panel.style.overflowY = 'auto';
@@ -871,14 +868,13 @@ var checkCryptoJS = setInterval(function() {
   #settings-panel {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
     min-width: 250px;
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
     border: 1px solid #444;
+    background-color: var(--SmartThemeBlurTintColor);
+    color: var(--SmartThemeBodyColor);
   }
 
   #settings-panel h2 {
-    color: #fff;
     text-align: center;
     margin-top: 0;
     padding-bottom: 15px;
@@ -886,7 +882,6 @@ var checkCryptoJS = setInterval(function() {
   }
 
   #settings-panel input, #settings-panel select, #settings-panel textarea {
-    background-color: rgba(60, 60, 60, 0.7);
     color: #fff;
     border: 1px solid #555;
     padding: 8px 12px;
@@ -909,24 +904,6 @@ var checkCryptoJS = setInterval(function() {
     gap: 10px;
     flex-wrap: wrap;
     margin: 10px 0;
-  }
-
-  #settings-panel button, .menu_button {
-    background-color: #555;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-  }
-
-  #settings-panel button:hover, .menu_button:hover {
-    background-color: #777;
-    transform: translateY(-2px);
   }
 
   .switch {
@@ -1060,11 +1037,11 @@ var checkCryptoJS = setInterval(function() {
             }
             html +=
                 `  </select>
-  <div class="menu_button interactable" title="保存风格" data-i18n="[title]Save style" id="worker_save_style" tabindex="0">
+  <div class="menu_button interactable menu_button_icon" title="保存风格" data-i18n="[title]Save style" id="worker_save_style" tabindex="0">
                   <i class="fa-solid fa-save"></i>
               </div>
 
-  <div class="menu_button interactable" title="删除风格" data-i18n="[title]Delete style" id="worker_delete_style" tabindex="0">
+  <div class="menu_button interactable menu_button_icon" title="删除风格" data-i18n="[title]Delete style" id="worker_delete_style" tabindex="0">
                   <i class="fa-solid fa-trash-can"></i>
               </div>
   </div>
@@ -1260,7 +1237,7 @@ var checkCryptoJS = setInterval(function() {
   </label><br>
       <label>nai3氛围参考图片:
     <input type="file" id="imageInput" accept="image/*">
-    <button type="button" onclick="document.getElementById('imageInput').click();">选择图片</button>
+    <button class="menu_button interactable menu_button_icon" type="button" onclick="document.getElementById('imageInput').click();">选择图片</button>
     <img id="previewImage" src="" alt="预览图片">
     </label>
   <br>
@@ -1279,7 +1256,7 @@ var checkCryptoJS = setInterval(function() {
                 `
     <label>comfyui氛围参考图片:
     <input type="file" id="imageInput2" accept="image/*">
-    <button type="button" onclick="document.getElementById('imageInput2').click();">选择图片</button>
+    <button class="menu_button interactable menu_button_icon" type="button" onclick="document.getElementById('imageInput2').click();">选择图片</button>
     <img id="previewImage2" src="" alt="预览图片">
     </label>
   <br>
@@ -1308,9 +1285,9 @@ var checkCryptoJS = setInterval(function() {
       <option value="false" ${settings.zidongdianji === 'false' ? 'selected' : ''}>False</option>
     </select>
   <br>
-  <button id="Clear-Cache">清除图片缓存</button><br>
-  <button id="save-settings">保存设置</button>
-  <button id="close-settings">关闭</button>
+  <button class="menu_button interactable menu_button_icon" id="Clear-Cache">清除图片缓存</button><br>
+  <button class="menu_button interactable menu_button_icon" id="save-settings">保存设置</button>
+  <button class="menu_button interactable menu_button_icon" id="close-settings">关闭</button>
   <br>
 
 `;
@@ -1325,16 +1302,6 @@ var checkCryptoJS = setInterval(function() {
     border: none;
     padding: 5px;
     margin: 5px 0;
-  }
-  #settings-panel button {
-    background-color: #444;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  #settings-panel button:hover {
-    background-color: #555;
   }
   .switch {
     position: relative;
@@ -1437,7 +1404,6 @@ var checkCryptoJS = setInterval(function() {
         }
         return panel;
     }
-
 
     function eidtJSON(obj) {
         for (let key in obj) {
