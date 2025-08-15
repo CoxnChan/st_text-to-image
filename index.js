@@ -862,7 +862,7 @@ var checkCryptoJS = setInterval(function() {
         panel.style.color = 'white';// 设置字体为白色
         panel.style.padding = '20px';
         panel.style.border = '1px solid white';// 设置边框为白色
-        panel.style.zIndex = '99999';
+        panel.style.zIndex = '99997';
         panel.style.display = 'none';
         panel.style.overflowY = 'auto';
         panel.style.maxHeight = '80vh';
@@ -1704,7 +1704,7 @@ var checkCryptoJS = setInterval(function() {
             overlay.style.width = '100%';
             overlay.style.height = '100%';
             overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            overlay.style.zIndex = '9999';
+            overlay.style.zIndex = '99998';
             document.body.appendChild(overlay);
 
             // 创建确认框
@@ -1717,7 +1717,7 @@ var checkCryptoJS = setInterval(function() {
             confirmBox.style.padding = '20px';
             confirmBox.style.borderRadius = '5px';
             confirmBox.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
-            confirmBox.style.zIndex = '10000';
+            confirmBox.style.zIndex = '99999';
             confirmBox.style.position = 'absolute';
             confirmBox.style.top = '50%';
             confirmBox.style.left = '50%';
@@ -1793,7 +1793,7 @@ var checkCryptoJS = setInterval(function() {
             overlay.style.width = '100%';
             overlay.style.height = '100%';
             overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-            overlay.style.zIndex = '9999';
+            overlay.style.zIndex = '99999';
             document.body.appendChild(overlay);
 
             // 创建确认框
@@ -1806,7 +1806,7 @@ var checkCryptoJS = setInterval(function() {
             confirmBox.style.padding = '20px';
             confirmBox.style.borderRadius = '5px';
             confirmBox.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.2)';
-            confirmBox.style.zIndex = '10000';
+            confirmBox.style.zIndex = '99999';
             confirmBox.style.position = 'absolute';
             confirmBox.style.top = '50%';
             confirmBox.style.left = '50%';
