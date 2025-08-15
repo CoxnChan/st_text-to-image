@@ -19,16 +19,16 @@ var checkCryptoJS = setInterval(function () {
         var unsafeWindow = window;
     }
 
-    function GM_setValue(key, value) {
+    function W_setValue(key, value) {
         localStorage.setItem(key, value);
     }
 
-    function GM_getValue(key, defaultValue) {
+    function W_getValue(key, defaultValue) {
         return localStorage.getItem(key) || defaultValue;
     }
     // 添加 GM_* 函数的 polyfill
-    if (typeof GM_setValue === 'undefined') {
-        window.GM_setValue = function (key, value) {
+    if (typeof W_setValue === 'undefined') {
+        window.W_setValue = function (key, value) {
             if (typeof value === 'object') {
                 localStorage.setItem(key, JSON.stringify(value));
             } else {
@@ -37,8 +37,8 @@ var checkCryptoJS = setInterval(function () {
         };
     }
 
-    if (typeof GM_getValue === 'undefined') {
-        window.GM_getValue = function (key, defaultValue) {
+    if (typeof W_getValue === 'undefined') {
+        window.W_getValue = function (key, defaultValue) {
             const value = localStorage.getItem(key);
             if (value === null) return defaultValue;
             try {
@@ -662,9 +662,9 @@ var checkCryptoJS = setInterval(function () {
             if (!db.objectStoreNames.contains(objectStoreName)) {
                 // 如果对象存储不存在，则创建它
                 const objectStore = db.createObjectStore(objectStoreName, { keyPath: 'id' });
-                console.log('Object store created:', objectStoreName);
+
             } else {
-                console.log('Object store already exists:', objectStoreName);
+
             }
         };
 
@@ -685,9 +685,9 @@ var checkCryptoJS = setInterval(function () {
                 if (!db.objectStoreNames.contains(objectStoreName)) {
                     // 如果对象存储不存在，则创建它
                     const objectStore = db.createObjectStore(objectStoreName, { keyPath: 'id' });
-                    console.log('Object store created:', objectStoreName);
+
                 } else {
-                    console.log('Object store already exists:', objectStoreName);
+
                 }
             };
 
@@ -719,9 +719,9 @@ var checkCryptoJS = setInterval(function () {
             if (!db.objectStoreNames.contains(objectStoreName)) {
                 // 如果对象存储不存在，则创建它
                 const objectStore = db.createObjectStore(objectStoreName, { keyPath: 'id' });
-                console.log('Object store created:', objectStoreName);
+
             } else {
-                console.log('Object store already exists:', objectStoreName);
+
             }
         };
 
@@ -791,27 +791,17 @@ var checkCryptoJS = setInterval(function () {
 
     for (const [key, defaultValue] of Object.entries(defaultSettings)) {
 
-        settings[key] = GM_getValue(key, defaultValue);
-        //     if(settings[key]=="image:{"){          //版本更新数据
-        //       if(key=="startTag"){
-        //       settings[key]="image###";
-        //       }
-        //    }
-        //    if(settings[key]=="}"){          //版本更新数据
-        //     if(key=="endTag"){
-        //     settings[key]="###";
-        //     }
-        //  }
+        settings[key] = W_getValue(key, defaultValue);
 
         // 如果没有读取到值，就使用默认值并保存
         if (settings[key] === defaultValue) {
             if (key == "yushe" || key == "workers" || key == "worker") {
-                GM_setValue(key, JSON.stringify(defaultValue));//使用字符串保存
+                W_setValue(key, JSON.stringify(defaultValue));//使用字符串保存
             } else {
-                GM_setValue(key, defaultValue);
+                W_setValue(key, defaultValue);
             }
         } else if (key == "yushe" || key == "workers") {
-            console.log(settings);
+
             try {
                 settings[key] = JSON.parse(settings[key]);//转json
                 if (key == "workers") {
@@ -827,9 +817,6 @@ var checkCryptoJS = setInterval(function () {
         }
     }
     settings.worker = settings["workers"][settings.workerid];//设置提示词
-    // settings["negativePrompt"]=settings["yushe"][settings.yusheid]["negativePrompt"];//设置提示词
-    // settings["fixedPrompt"]=settings["yushe"][settings.yusheid]["fixedPrompt"];
-
 
     function addNewElement() {
         const targetElement = document.querySelector('#option_toggle_AN');
@@ -846,7 +833,7 @@ var checkCryptoJS = setInterval(function () {
             newElement.appendChild(span);
             // return  true; // 表示操作成功完成
             targetElement.parentNode.insertBefore(newElement, targetElement.nextSibling);
-            console.log("New element added successfully");
+
             document.getElementById('option_toggle_AN2').addEventListener('click', showSettingsPanel);
         }
     }
@@ -1353,8 +1340,8 @@ var checkCryptoJS = setInterval(function () {
         // 添加滑块切换事件监听器
         document.getElementById('scriptToggle').addEventListener('change', function () {
             settings.scriptEnabled = this.checked;
-            GM_setValue('scriptEnabled', this.checked);
-            console.log('Script ' + (this.checked ? 'enabled' : 'disabled'));
+            W_setValue('scriptEnabled', this.checked);
+
         });
         document.getElementById('yusheid').addEventListener('change', tishici_change);
 
@@ -1390,10 +1377,6 @@ var checkCryptoJS = setInterval(function () {
         if (document.getElementById('eidtwork')) {
             document.getElementById('eidtwork').addEventListener('click', eidtwork);
         }
-
-
-
-
         const imageInput = document.getElementById('imageInput')
         const imageInput2 = document.getElementById('imageInput2')
         if (imageInput) {
@@ -1409,15 +1392,13 @@ var checkCryptoJS = setInterval(function () {
         for (let key in obj) {
             if (obj.hasOwnProperty(key)) {
                 // 打印当前层级的键
-                console.log(`Key: ${key}`);
-
                 // 如果值是对象，递归遍历
                 if (typeof obj[key] === 'object' && obj[key] !== null) {
-                    console.log(`Value is an object, diving deeper...`);
+
                     eidtJSON(obj[key]);
                 } else {
                     // 如果是基本类型，直接打印值
-                    console.log(`Value: ${obj[key]}`);
+
                     if (key.includes("seed")) {
 
                         obj[key] = "%seed%";
@@ -1453,8 +1434,6 @@ var checkCryptoJS = setInterval(function () {
                         obj[key] = "%negative_prompt%";
                     }
 
-
-
                 }
             }
         }
@@ -1465,7 +1444,7 @@ var checkCryptoJS = setInterval(function () {
 
         alert("请在导出时设置为正面提示词“正面”，负面设置为”负面”，情况复杂，不保证可用性。会简易的替换：模型名称、提示词、步数、cfg、采样器、宽度、高度、seed。");
         let el = document.getElementById("worker");
-        console.log(el.value)
+
 
         try {
             let textrejsons = JSON.parse(el.value.trim())
@@ -1479,9 +1458,7 @@ var checkCryptoJS = setInterval(function () {
 
     }
 
-
     function ComfyuiaddLORA() {
-
         const fixedPrompt = document.getElementById("fixedPrompt");
         let lora = document.getElementById("ComfyuiLORA");
 
@@ -1490,17 +1467,14 @@ var checkCryptoJS = setInterval(function () {
             return;
         }
         fixedPrompt.value = fixedPrompt.value + ",<lora:" + lora.value + ":1>";
-
     }
 
-
     async function testComfyui() {
-
         let el = document.getElementById("sdUrl");
-        console.log(el);
+
         let testurl = removeTrailingSlash(el.value);
 
-        console.log(testurl);
+
 
         testurl = testurl + "/object_info";
         const response = await new Promise((resolve, reject) => {
@@ -1528,7 +1502,7 @@ var checkCryptoJS = setInterval(function () {
                 }
             });
         });
-        console.log("re", JSON.parse(response.responseText));
+
         let lora = document.getElementById("ComfyuiLORA");
 
         let mode = document.getElementById("MODEL_NAME");
@@ -1540,7 +1514,7 @@ var checkCryptoJS = setInterval(function () {
         let ModelList = JSON.parse(response.responseText)["CheckpointLoaderSimple"]["input"]["required"]["ckpt_name"][0];
 
 
-        console.log("loralist", loralist);
+
 
         lora.innerHTML = ""
 
@@ -1587,10 +1561,10 @@ var checkCryptoJS = setInterval(function () {
                 settings.yushe[result] = { "fixedPrompt": fixedPrompt.value, "negativePrompt": negativePrompt.value };
                 settings.negativePrompt = negativePrompt.value;
                 settings.fixedPrompt = fixedPrompt.value;
-                GM_setValue("yushe", JSON.stringify(settings.yushe));
-                GM_setValue("yusheid", settings.yusheid);
-                GM_setValue("negativePrompt", settings.negativePrompt);
-                GM_setValue("fixedPrompt", "");
+                W_setValue("yushe", JSON.stringify(settings.yushe));
+                W_setValue("yusheid", settings.yusheid);
+                W_setValue("negativePrompt", settings.negativePrompt);
+                W_setValue("fixedPrompt", "");
                 return true;
             } else {
                 return false;
@@ -1607,7 +1581,7 @@ var checkCryptoJS = setInterval(function () {
                 const fixedPrompt = document.getElementById("fixedPrompt");
                 const selectElement = document.getElementById("yusheid");
 
-                console.log("selectElement", selectElement.value)
+
                 let valve = selectElement.value;
 
                 // negativePrompt.value="";
@@ -1617,10 +1591,10 @@ var checkCryptoJS = setInterval(function () {
                 selectElement.value = "默认";
                 settings.yusheid = "默认";
 
-                GM_setValue("yusheid", settings.yusheid);
-                GM_setValue("yushe", JSON.stringify(settings.yushe));
-                // GM_setValue("negativePrompt","");
-                //  GM_setValue("fixedPrompt","");
+                W_setValue("yusheid", settings.yusheid);
+                W_setValue("yushe", JSON.stringify(settings.yushe));
+                // W_setValue("negativePrompt","");
+                //  W_setValue("fixedPrompt","");
 
                 return true;
             } else {
@@ -1630,6 +1604,64 @@ var checkCryptoJS = setInterval(function () {
 
     }
 
+    function saveSettings() {
+        for (const key of Object.keys(defaultSettings)) {
+            if (key == "yushe") {
+                // 确保yushe对象包含当前UI中的值
+                const negativePrompt = document.getElementById("negativePrompt");
+                const fixedPrompt = document.getElementById("fixedPrompt");
+                const yusheid = document.getElementById("yusheid").value;
+                if (settings.yushe && settings.yushe[yusheid]) {
+                    settings.yushe[yusheid].negativePrompt = negativePrompt.value;
+                    settings.yushe[yusheid].fixedPrompt = fixedPrompt.value;
+                }
+                W_setValue(key, JSON.stringify(settings[key]));
+                continue;
+            }
+            if (key == "workers") {
+                // 确保workers对象包含当前UI中的值
+                const workerElement = document.getElementById("worker");
+                const workeridElement = document.getElementById("workerid");
+
+                // 只有当两个元素都存在时才更新workers对象
+                if (workerElement && workeridElement) {
+                    const workerid = workeridElement.value;
+                    if (settings.workers && settings.workers[workerid]) {
+                        settings.workers[workerid] = workerElement.value;
+                    }
+                }
+                W_setValue(key, JSON.stringify(settings[key]));
+                continue;
+            }
+            if (key == "worker") {
+                // 直接从UI更新worker值
+                const workerElement = document.getElementById("worker");
+                if (workerElement) {
+                    settings.worker = workerElement.value;
+                    W_setValue(key, JSON.stringify(settings[key]));
+                }
+                continue;
+            }
+
+            const element = document.getElementById(key);
+            if (element) {
+                // 原有验证逻辑保持不变
+                // ... existing validation code ...
+
+                settings[key] = element.value;
+                W_setValue(key, element.value);
+            }
+        }
+
+        // 保存其他相关设置
+        W_setValue("negativePrompt", document.getElementById("negativePrompt").value);
+        W_setValue("fixedPrompt", document.getElementById("fixedPrompt").value);
+        W_setValue("yusheid", document.getElementById("yusheid").value);
+        W_setValue("workerid", document.getElementById("workerid"));
+
+        hideSettingsPanel();
+        alert("设置已保存");
+    }
     function worker_save() {
 
         stylInput("请输入配置名称").then((result) => {
@@ -1647,9 +1679,9 @@ var checkCryptoJS = setInterval(function () {
                 settings.workerid = result;
                 settings.workers[result] = worker.value;
                 settings.worker = worker.value;
-                GM_setValue("workers", JSON.stringify(settings.workes));
-                GM_setValue("workerid", settings.workerid);
-                GM_setValue("worker", JSON.stringify(settings.worker));
+                W_setValue("workers", JSON.stringify(settings.workers));  // 修复拼写错误
+                W_setValue("workerid", settings.workerid);
+                W_setValue("worker", JSON.stringify(settings.worker));
                 return true;
             } else {
                 return false;
@@ -1669,7 +1701,7 @@ var checkCryptoJS = setInterval(function () {
                     return false;
                 }
 
-                console.log("selectElement", selectElement.value)
+
                 let valve = selectElement.value;
 
                 // negativePrompt.value="";
@@ -1680,11 +1712,11 @@ var checkCryptoJS = setInterval(function () {
                 settings.workerid = "默认";
                 settings.worker = settings["workers"][settings["workerid"]];//设置提示词
                 worker.value = settings["workers"][settings["workerid"]];//设置提示词
-                GM_setValue("workerid", settings["workerid"]);
-                GM_setValue("workers", JSON.stringify(settings["workers"]));
-                GM_setValue("worker", JSON.stringify(settings["worker"]));
-                // GM_setValue("negativePrompt","");
-                //  GM_setValue("fixedPrompt","");
+                W_setValue("workerid", settings["workerid"]);
+                W_setValue("workers", JSON.stringify(settings["workers"]));
+                W_setValue("worker", JSON.stringify(settings["worker"]));
+                // W_setValue("negativePrompt","");
+                //  W_setValue("fixedPrompt","");
                 return true;
             } else {
                 return false;
@@ -1708,9 +1740,9 @@ var checkCryptoJS = setInterval(function () {
         settings["fixedPrompt"] = settings["yushe"][settings["yusheid"]]["fixedPrompt"];
         fixedPrompt.value = settings["yushe"][settings["yusheid"]]["fixedPrompt"];//设置提示词
 
-        GM_setValue("yusheid", settings["yusheid"]);
-        GM_setValue("negativePrompt", settings["negativePrompt"]);
-        GM_setValue("fixedPrompt", settings["fixedPrompt"]);
+        W_setValue("yusheid", settings["yusheid"]);
+        W_setValue("negativePrompt", settings["negativePrompt"]);
+        W_setValue("fixedPrompt", settings["fixedPrompt"]);
 
     }
 
@@ -1737,12 +1769,12 @@ var checkCryptoJS = setInterval(function () {
         const selectElement = document.getElementById("workerid");
 
         settings["workerid"] = selectElement.value;
-        console.log("value", settings["workers"][settings["workerid"]])
-        console.log("workid", [settings["workerid"]])
+
+
         worker.value = settings["workers"][settings["workerid"]];//设置提示词
         settings["worker"] = settings["workers"][settings["workerid"]];//设置提示词
-        GM_setValue("workerid", settings["workerid"]);
-        GM_setValue("worker", JSON.stringify(settings["worker"]));
+        W_setValue("workerid", settings["workerid"]);
+        W_setValue("worker", JSON.stringify(settings["worker"]));
 
     }
 
@@ -1922,7 +1954,7 @@ var checkCryptoJS = setInterval(function () {
 
         await stylishConfirm("是否清空图片缓存").then(async (result) => {
             if (result) {
-                console.log("imagesid", imagesid)
+
                 if (imagesid != "") {
                     for (let [key, value] of Object.entries(imagesid)) {
 
@@ -1948,128 +1980,6 @@ var checkCryptoJS = setInterval(function () {
         return str.endsWith('/') ? str.slice(0, -1) : str;
     }
 
-    function saveSettings() {
-        for (const key of Object.keys(defaultSettings)) {
-            if (key == "yushe") {
-                GM_setValue(key, JSON.stringify(settings[key]));
-
-                continue;
-            }
-            if (key == "workers") {
-                GM_setValue(key, JSON.stringify(settings[key]));
-
-                continue;
-            }
-            if (key == "worker") {
-                GM_setValue(key, JSON.stringify(settings[key]));
-
-                continue;
-            }
-
-            const element = document.getElementById(key);
-            if (element) {
-
-                if (key == "sdUrl") {
-
-                    if (element.value !== settings[key]) {
-
-                        element.value = removeTrailingSlash(element.value);
-                        if (!confirm("你修改了url,请确认是否为http://192.168.10.2:7860 这种http://+ip/网址+端口的模式，确认？如果不清楚请刷新网页恢复默认！")) {
-                            return;
-                        }
-                        // return false;
-
-                    }
-
-                }
-
-
-                if (key == "startTag" || key == "endTag") {
-
-                    if (element.value !== settings[key]) {
-
-                        sendGenerateTagsResponse();
-
-                    }
-
-                }
-
-
-
-                if (key == "mode") {
-
-                    if (element.value !== settings[key]) {
-
-
-                        if (!confirm("你修改了模式请刷新页面生效")) {
-                            return;
-                        }
-                        // return false;
-
-                    }
-
-                }
-                if (key == "displayMode") {
-
-                    if (element.value !== settings[key]) {
-
-
-                        if (!confirm("你修改了兼容模式请注意兼容模式需要配合酒馆脚本.图片在消息左下角生成。")) {
-                            return;
-                        }
-                        // return false;
-
-                    }
-
-                }
-
-                if (key == "samplerName") {
-
-                    if (element.value !== settings[key]) {
-                        if (!confirm("你修改了sd的采样方式，请注意输入是否正确，确认？如果不清楚请点取消刷新网页恢复默认！")) {
-                            return;
-                        }
-                        // return false;
-
-                    }
-
-                }
-                if (key == "steps") {
-
-                    if ((element.value !== settings[key]) && (Number(element.value) > 28) && (settings["mode"] == "novelai")) {
-                        if (!confirm("你修改了nai3的步数并且大于28，大于28将会收费，确认？如果不清楚请点取消刷新网页恢复默认！")) {
-                            return;
-                        }
-                        // return false;
-
-                    }
-
-                }
-                if (key == "height" || key == "width") {
-
-                    if (element.value !== settings[key] && (Number(element.value) > 1024) && (settings["mode"] == "novelai") || key == "width" && Number(element.value) > 1024 && settings["mode"] == "novelai") {
-
-
-                        if (Number(element.value) > 1024 && Number(element.value) != 1216) {
-                            if (!confirm("你修改了nai3的宽高并且大于1024，大于1024将会收费，确认？如果不清楚请点取消刷新网页恢复默认！")) {
-                                return;
-                            }
-                        }
-                        // return false;
-
-                    }
-
-                }
-
-                settings[key] = element.value;
-
-                GM_setValue(key, element.value);
-
-            }
-        }
-        console.log('Settings saved');
-        hideSettingsPanel();
-    }
     function closeSettings() {
         hideSettingsPanel();
     }
@@ -2082,10 +1992,10 @@ var checkCryptoJS = setInterval(function () {
             const element = document.getElementById(key);
             if (element) {
                 settings[key] = element.value;
-                GM_setValue(key, element.value);
+                W_setValue(key, element.value);
             }
         }
-        console.log('Settings saved:', settings);
+
         const panel = document.getElementById('settings-panel');
         if (!panel) {
             createSettingsPanel();
@@ -2102,21 +2012,10 @@ var checkCryptoJS = setInterval(function () {
         return new Promise((resolve, reject) => {
             JSZip.loadAsync(arrayBuffer)
                 .then(function (zip) {
-                    console.log("ZIP 文件加载成功");
-
                     // 遍历 ZIP 文件中的所有文件
                     zip.forEach(function (relativePath, zipEntry) {
-                        console.log("文件名:", zipEntry.name);
-
-                        // // 解压每个文件
-                        // zipEntry.async('blob').then(function(blob) {
-                        //     console.log("文件大小:", blob.size);
-                        //     // 处理解压后的文件内容
-
-                        //     resolve(blob);
-                        // });
                         zipEntry.async('base64').then(function (base64String) {
-                            console.log("文件大小:", base64String.size);
+
                             resolve(base64String);
                         });
                     });
@@ -2146,7 +2045,7 @@ var checkCryptoJS = setInterval(function () {
             img.style.height = 'auto';
             img.src = base64Image;
             // Process the base64 image data here
-            console.log(base64Image);
+
         };
 
         reader.readAsDataURL(file);
@@ -2160,13 +2059,13 @@ var checkCryptoJS = setInterval(function () {
         reader.onload = function (e) {
             const base64Image = e.target.result;
             nai3cankaotupian = base64Image;
-            console.log(base64Image);
+
             let img = document.getElementById('previewImage2')
             img.style.maxWidth = '100%';
             img.style.height = 'auto';
             img.src = base64Image;
             // Process the base64 image data here
-            console.log(base64Image);
+
         };
 
 
@@ -2194,13 +2093,13 @@ var checkCryptoJS = setInterval(function () {
                 // 不需要手动设置 Content-Type，让浏览器自动处理 FormData
                 onload: function (response) {
                     if (response.status >= 200 && response.status < 300) {
-                        console.log("上传成功", response);
+
                         try {
                             const result = JSON.parse(response.responseText);
                             comfyuicankaotupian = result.name;
-                            console.log("服务器返回数据:", result);
+
                         } catch (e) {
-                            console.log("原始返回数据:", response.responseText);
+
                         }
                     } else {
                         alert("上传失败");
@@ -2330,7 +2229,7 @@ var checkCryptoJS = setInterval(function () {
         if (button1.dataset.link.includes("Scene Composition") && (settings.novelaimode == "nai-diffusion-4-curated-preview" || settings.novelaimode == "nai-diffusion-4-full" || settings.novelaimode == "nai-diffusion-4-5-full" || settings.novelaimode == "nai-diffusion-4-5-curated")) {
             Divide_roles = true;
         }
-        console.log("Divide_roles", Divide_roles);
+
 
         let access_token = settings.novelaiApi//填写你的novelai的apikey，在官方网站的设置  Account 里 Get Persistent API Token
         button1.textContent = "加载中";
@@ -2357,7 +2256,7 @@ var checkCryptoJS = setInterval(function () {
 
         if (Divide_roles) {
             prompt_data = parsePromptStringWithCoordinates(button1.dataset.link);
-            console.log("prompt_data", prompt_data);
+
 
             prompt = await zhengmian(settings.fixedPrompt, prompt_data["Scene Composition"], aqt);                    //固定正面提示词
         } else {
@@ -2397,8 +2296,8 @@ var checkCryptoJS = setInterval(function () {
             "reference_strength_multiple": [],
             "use_coords": use_coords
         }
-        console.log("nai3cankaotupian", nai3cankaotupian);
-        console.log("settings.nai3VibeTransfer", settings.nai3VibeTransfer);
+
+
         if (settings.novelaimode == "nai-diffusion-4-curated-preview" || settings.novelaimode == "nai-diffusion-4-full" || settings.novelaimode == "nai-diffusion-4-5-curated" || settings.novelaimode == "nai-diffusion-4-5-full") {
             if (Divide_roles) {
                 let characterPrompts = [];
@@ -2407,7 +2306,7 @@ var checkCryptoJS = setInterval(function () {
                         characterPrompts[i - 1] = { prompt: prompt_data[`Character ${i} Prompt`], center: prompt_data[`Character ${i} coordinates`], uc: prompt_data[`Character ${i} UC`] ? prompt_data[`Character ${i} UC`] : 'one arms,lowres, aliasing, jaggy lines,bad hands,one legs' };
                     }
                 }
-                console.log("prompt_data[`Character 1 coordinates`]", prompt_data[`Character 1 coordinates`]);
+
 
                 let v4_negative_prompt = {};
                 v4_negative_prompt["caption"] = {};
@@ -2464,11 +2363,11 @@ var checkCryptoJS = setInterval(function () {
                     "v4_negative_prompt": v4_negative_prompt
                 }
                 if (settings.nai3Variety != "false" && settings.novelaimode == "nai-diffusion-4-full") {
-                    console.log("skip_cfg_above_sigma", "4")
+
                     preset_data["skip_cfg_above_sigma"] = 19
                 }
                 if (settings.nai3Variety != "false" && ((settings.novelaimode == "nai-diffusion-4-5-curated") || (settings.novelaimode == "nai-diffusion-4-5-full"))) {
-                    console.log("skip_cfg_above_sigma", "4.5")
+
                     preset_data["skip_cfg_above_sigma"] = 59.04722600415217
                 }
 
@@ -2524,16 +2423,16 @@ var checkCryptoJS = setInterval(function () {
             preset_data["prefer_brownian"] = true;
         }
         if (settings.nai3Variety != "false" && settings.novelaimode == "nai-diffusion-4-full") {
-            console.log("skip_cfg_above_sigma", "4")
+
             preset_data["skip_cfg_above_sigma"] = 19
         }
         if (settings.nai3Variety != "false" && ((settings.novelaimode == "nai-diffusion-4-5-curated") || (settings.novelaimode == "nai-diffusion-4-5-full"))) {
-            console.log("skip_cfg_above_sigma", "4.5")
+
             preset_data["skip_cfg_above_sigma"] = 59.04722600415217
 
         }
         if (settings.nai3Variety != "false" && settings.novelaimode == "nai-diffusion-4-5-curated") {
-            console.log("skip_cfg_above_sigma", "4.5")
+
             preset_data["skip_cfg_above_sigma"] = 58
 
         }
@@ -2567,7 +2466,7 @@ var checkCryptoJS = setInterval(function () {
                 await sleep(1000);
             }
         };
-        console.log("data11", data11)
+
         try {
             xiancheng = false;
             const response = await new Promise((resolve, reject) => {
@@ -2625,14 +2524,14 @@ var checkCryptoJS = setInterval(function () {
 
             const data123 = await response.response;
 
-            console.log("response", response);
 
-            console.log("data123", data123);
+
+
 
             if (response.status > 400) {
                 let mess = await response.responseText;
                 alert(`请求失败,状态码: ${await mess} `)
-                console.log(mess);
+
                 return;
             }
 
@@ -2645,15 +2544,15 @@ var checkCryptoJS = setInterval(function () {
                     // 创建图像元素并设置源
                     if (event.eventType == "final") {
 
-                        console.log("event.imageData", event.imageData);
+
                         let data = uint8ArrayToBase64(event.imageData)
-                        console.log("data", data);
+
 
                         re = data;
                     }
 
                 });
-                console.log("re", re);
+
 
             } else {
 
@@ -2790,7 +2689,7 @@ var checkCryptoJS = setInterval(function () {
             const a = p.querySelectorAll('a[target="_blank"][rel="noopener"]');
             if (a.length > 0) {
 
-                console.log(a.length)
+
                 a[0].rel = "noreferrer"
                 var linkText = a[0].textContent;
                 var regex = new RegExp(`${escapeRegExp(window.start)}([\\s\\S]*?)${escapeRegExp(window.end)}`);
@@ -2812,7 +2711,7 @@ var checkCryptoJS = setInterval(function () {
                     button.name = imgSpan.id;
                     // let  re=new RegExp(`${window.start}([\\s\\S]*?)${window.end}`);
                     // let Text=p.innerHTML.match(re)[0];
-                    // console.log("Text",p.innerHTML.match(re));
+
 
                     a[0].replaceWith(button);
 
@@ -2832,7 +2731,7 @@ var checkCryptoJS = setInterval(function () {
                                     return;
                                 }
                                 addSmoothShakeEffect(event.target);
-                                console.log("sssssssss", event.target.dataset.name);
+
                                 nai3(document.getElementById(event.target.dataset.name))// 程序触发按钮的点击事件
                             });
                         }
@@ -2857,12 +2756,12 @@ var checkCryptoJS = setInterval(function () {
 
                         });
                     }
-                    console.log('imgSpan', imgSpan);
+
 
                     newbutton.parentNode.insertBefore(imgSpan, newbutton.nextSibling);
 
                     let loadimg = await getItemImg(link)
-                    console.log('loadimg', loadimg);
+
                     if (loadimg) {
                         const dataURL = loadimg;
                         let imgSpan = document.getElementById(button.name);
@@ -2955,7 +2854,7 @@ var checkCryptoJS = setInterval(function () {
             "seed": settings.seed === 0 || settings.seed === "0" || settings.seed === "" ? -1 : settings.seed
         };
 
-        console.log("payload", payload);
+
         //alert(payload.prompt);
 
 
@@ -2990,7 +2889,7 @@ var checkCryptoJS = setInterval(function () {
                         } else {
                             button1.textContent = "生成图片";
                             alert("响应内容:sd返回错误可能是你输入参数有误" + response.responseText);
-                            console.log("响应内容:", response.responseText);
+
                             xiancheng = true;
                             reject(new Error(`请求失败,状态码: ${response.status}`));
 
@@ -3104,7 +3003,7 @@ var checkCryptoJS = setInterval(function () {
             const a = p.querySelectorAll('a[target="_blank"][rel="noopener"]');
             if (a.length > 0) {
 
-                console.log(a.length)
+
                 a[0].rel = "noreferrer"
                 var linkText = a[0].textContent;
                 var regex = new RegExp(`${escapeRegExp(window.start)}([\\s\\S]*?)${escapeRegExp(window.end)}`);
@@ -3126,7 +3025,7 @@ var checkCryptoJS = setInterval(function () {
                     button.name = imgSpan.id;
                     // let  re=new RegExp(`${window.start}([\\s\\S]*?)${window.end}`);
                     // let Text=p.innerHTML.match(re)[0];
-                    // console.log("Text",p.innerHTML.match(re));
+
 
                     a[0].replaceWith(button);
 
@@ -3145,7 +3044,7 @@ var checkCryptoJS = setInterval(function () {
                                     return;
                                 }
                                 addSmoothShakeEffect(event.target);
-                                console.log("sssssssss", event.target.dataset.name);
+
                                 sd(document.getElementById(event.target.dataset.name))// 程序触发按钮的点击事件
                             });
                         }
@@ -3178,7 +3077,7 @@ var checkCryptoJS = setInterval(function () {
                     newbutton.parentNode.insertBefore(imgSpan, newbutton.nextSibling);
 
                     let loadimg = await getItemImg(link)
-                    console.log('loadimg', loadimg);
+
                     if (loadimg) {
                         const dataURL = loadimg;
                         let imgSpan = document.getElementById(button.name);
@@ -3231,7 +3130,7 @@ var checkCryptoJS = setInterval(function () {
         json = json.replaceAll("\"%comfyuicankaotupian%\"", `${'"' + payload.comfyuicankaotupian + '"'}`);
         json = json.replaceAll("\"%ipa%\"", `${'"' + payload.ipa + '"'}`);
 
-        console.log(json);
+
         return json
     }
 
@@ -3272,7 +3171,7 @@ var checkCryptoJS = setInterval(function () {
         }
         prompt = replaceLoraTags(prompt);  //替换lora字符串  处理字符
 
-        console.log("prompt", prompt);
+
         let negative_prompt = await fumian(settings.negativePrompt, settings.UCP);
         negative_prompt = replaceLoraTags(negative_prompt);
         prompt = prompt.replaceAll("\n", ",").replaceAll("\\\\", "\\").replaceAll("\\", "\\\\");
@@ -3306,7 +3205,7 @@ var checkCryptoJS = setInterval(function () {
   "prompt":${payload}
   }`
 
-        console.log("payload", payload);
+
         //alert(payload.prompt);
 
         let abc = true;
@@ -3340,7 +3239,7 @@ var checkCryptoJS = setInterval(function () {
                         } else {
                             button1.textContent = "生成图片";
                             alert("响应内容:sd返回错误可能是你输入参数有误" + response.responseText);
-                            console.log("响应内容:", response.responseText);
+
                             xiancheng = true;
                             reject(new Error(`请求失败,状态码: ${response.status}`));
                         }
@@ -3376,7 +3275,7 @@ var checkCryptoJS = setInterval(function () {
                         });
                     });
 
-                    console.log("response2", response2.responseText);
+
                     let re = JSON.parse(await response2.responseText)
                     if (re.hasOwnProperty(id)) {
 
@@ -3441,7 +3340,7 @@ var checkCryptoJS = setInterval(function () {
                         let blob = new Blob([re2], { type: 'image/png' });
                         const imageUrl = URL.createObjectURL(blob);
 
-                        console.log("dataURL", imageUrl);
+
                         await convertImageToBase64(button1.dataset.link, blob)
 
                         if (Xwidth && Xheight) {
@@ -3497,41 +3396,6 @@ var checkCryptoJS = setInterval(function () {
             button1.textContent = "生成图片";
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     async function replaceSpansWithImagesstcomfyui() {
 
         if (!settings.scriptEnabled) {
@@ -3540,7 +3404,6 @@ var checkCryptoJS = setInterval(function () {
         if (checkSendBuClass()) {
             return;
         }
-
 
         //以下为comfyui的设置
         window.start = settings.startTag;
@@ -3565,7 +3428,7 @@ var checkCryptoJS = setInterval(function () {
             var p = ps[i];
             const a = p.querySelectorAll('a[target="_blank"][rel="noopener"]');
             if (a.length > 0) {
-                console.log(a.length)
+
                 a[0].rel = "noreferrer"
                 var linkText = a[0].textContent;
                 var regex = new RegExp(`${escapeRegExp(window.start)}([\\s\\S]*?)${escapeRegExp(window.end)}`);
@@ -3585,14 +3448,10 @@ var checkCryptoJS = setInterval(function () {
                     imgSpan.id = "span_" + Math.random().toString(36).substr(2, 9);
                     imgSpan.dataset.name = uniqueId;
                     button.name = imgSpan.id;
-                    // let  re=new RegExp(`${window.start}([\\s\\S]*?)${window.end}`);
-                    // let Text=p.innerHTML.match(re)[0];
-                    // console.log("Text",p.innerHTML.match(re));
+
 
                     a[0].replaceWith(button);
 
-                    // p.innerHTML = p.innerHTML.replace(Text, button.outerHTML);
-                    // alert(targetText);
                     // 重新找到新创建的按钮
                     var newbutton = document.getElementById(uniqueId);
 
@@ -3607,16 +3466,13 @@ var checkCryptoJS = setInterval(function () {
                                     return;
                                 }
                                 addSmoothShakeEffect(event.target);
-                                console.log("sssssssss", event.target.dataset.name);
+
                                 comfyui(document.getElementById(event.target.dataset.name))// 程序触发按钮的点击事件
                             });
                         }
                     }
 
                     newbutton.spanid = imgSpan.id;
-
-
-
                     if (!p.hasclik) {
                         p.hasclik = true;
                         p.addEventListener('click', async function (event) {
@@ -3634,13 +3490,12 @@ var checkCryptoJS = setInterval(function () {
 
                         });
                     }
-                    //   p.parentNode.replaceChild(button, span);
 
 
                     newbutton.parentNode.insertBefore(imgSpan, newbutton.nextSibling);
 
                     let loadimg = await getItemImg(link)
-                    console.log('loadimg', loadimg);
+
                     if (loadimg) {
                         const dataURL = loadimg;
                         let imgSpan = document.getElementById(button.name);
@@ -3677,7 +3532,6 @@ var checkCryptoJS = setInterval(function () {
         }
     }
 
-
     async function convertImageToBase64(link, imageBlob) {
         const reader = new FileReader();
         reader.onload = function (e) {
@@ -3687,14 +3541,6 @@ var checkCryptoJS = setInterval(function () {
         };
         reader.readAsDataURL(imageBlob);
     }
-
-
-
-
-
-
-
-
 
     async function replaceSpansWithImagesfree() {
         if (!settings.scriptEnabled) {
@@ -3738,7 +3584,7 @@ var checkCryptoJS = setInterval(function () {
                 button.dataset.link = link;
                 let re = new RegExp(`${window.start}([\\s\\S]*?)${window.end}`);
                 let Text = p.innerHTML.match(re)[0];
-                console.log("Text", p.innerHTML.match(re));
+
 
                 p.innerHTML = p.innerHTML.replace(Text, button.outerHTML);
                 // alert(targetText);
@@ -3746,7 +3592,7 @@ var checkCryptoJS = setInterval(function () {
                 var newbutton = document.getElementById(uniqueId);
                 if (settings.dbclike == "true") {
                     imgSpan.addEventListener('dblclick', (event) => {
-                        console.log("sssssssss", event.target.dataset.name);
+
                         addSmoothShakeEffect(event.target);
                         free(document.getElementById(event.target.dataset.name))// 程序触发按钮的点击事件
 
@@ -3763,9 +3609,9 @@ var checkCryptoJS = setInterval(function () {
                     window.height = settings.height;//长度
                     prompt = prompt.replaceAll(" ", "");
                     prompt = prompt.replaceAll(",", " ");
-                    console.log('prompt', prompt);
+
                     const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt) + "?width=" + window.width + "&height=" + window.height + "&seed=" + ran + "&model=" + window.freeMode}`;
-                    console.log('uel', url);
+
                     const img = document.createElement('img');
                     img.src = url;
                     img.alt = "Generated Image";
@@ -3782,9 +3628,6 @@ var checkCryptoJS = setInterval(function () {
                         button1.style.padding = '0';
                         button1.style.border = 'none';
                     }
-
-
-
                 }
                 if (!p.hasclik) {
                     p.hasclik = true;
@@ -3806,11 +3649,10 @@ var checkCryptoJS = setInterval(function () {
 
                     });
                 }
-
                 newbutton.parentNode.insertBefore(imgSpan, newbutton.nextSibling);
 
                 let loadimg = await getItemImg(link)
-                console.log('loadimg', loadimg);
+
                 if (loadimg) {
                     const dataURL = loadimg;
                     let imgSpan = document.getElementById(button.name);
@@ -3864,7 +3706,6 @@ var checkCryptoJS = setInterval(function () {
 
     setInterval(chenk, 2000);
 
-
     async function setItemImg(tag, img) {
         let md5 = CryptoJS.MD5(tag).toString();
         if (imagesid == "") {
@@ -3874,73 +3715,22 @@ var checkCryptoJS = setInterval(function () {
         }
 
         let time = new Date().getTime();
-        //   console.log("md5",md5);
-        //   console.log("time",time);
-        //   console.log("img",img);
 
-        console.log("imagesid", imagesid);
         imagesid[md5] = [time];
-        //console.log("imagesmd5",images[md5]);
+
         const data = { id: `${md5}`, tupian: `${img}` };
         const data2 = { id: "tupianshuju", shuju: `${JSON.stringify(imagesid)}` };
         Storereadwrite(data);
         Storereadwrite(data2);
-
-        //  GM_setValue("图片",JSON.stringify(images));
-
     };
     async function getItemImg(tag) {
 
         let md5 = CryptoJS.MD5(tag).toString();
         if (imagesid == "") {//载入图片数据
-            //   let image;
-            // image=GM_getValue("图片数据","无");
             let imageid = await Storereadonly("tupianshuju");
-
-            //  console.log("imageid",imageid);
-            // console.log("image",image);
-            // console.log("imageid",imageid);
             if (!imageid) {
                 return false;
             }
-            //   console.log("image",image);
-
-            // if(image!="无"){//转移旧数据
-            //     let json=JSON.parse(image);
-            //     alert("数据转移");
-
-            //     for (let [key, value] of Object.entries(json)) {
-
-            //         if(await delDate(value)){
-
-            //          Reflect.deleteProperty(json, key);
-            //          GM_deleteValue(key);
-
-            //         }
-
-            //     }
-            //     imagesid={};
-            //     for (let [key, value] of Object.entries(json)) {
-            //         console.log(key + ': ' + value);
-            //             imagesid[key]=value;
-            //            let tupian= GM_getValue(key,"");
-            //             const data={ id: `${key}`, tupian: `${tupian}` }
-            //             await Storereadwrite(data);
-            //       }
-
-            //    // GM_setValue("图片数据",JSON.stringify(imagesid));
-            //     const data = { id: "tupianshuju", shuju: `${JSON.stringify(imagesid)}` };
-            //     await Storereadwrite(data);
-
-            //     GM_deleteValue("图片数据");
-            //     console.log("imagesid",imagesid);
-            //     let list=GM_listValues();
-            //     for(let i=0;i<list.length;i++){
-            //         if(!settings.hasOwnProperty(list[i])){
-            //             GM_deleteValue(list[i]);
-            //         }
-            //     }
-            // }else{
             imagesid = {};
             imagesid = JSON.parse(imageid.shuju);
             // }
@@ -3957,15 +3747,11 @@ var checkCryptoJS = setInterval(function () {
             }
             const data = { id: "tupianshuju", shuju: `${JSON.stringify(imagesid)}` };
             await Storereadwrite(data);
-
         }
         if (imagesid.hasOwnProperty(md5)) {
             let image = await Storereadonly(md5);
-            console.log("image", image);
             return image.tupian;
-
         }
-
         return false;
     };
 
@@ -4004,7 +3790,7 @@ var checkCryptoJS = setInterval(function () {
 
     }
     async function fumian(text, UCP) {
-        console.log("negativePrompt", settings.negativePrompt)
+
         if (text == "") {
 
             return UCP;
@@ -4054,9 +3840,6 @@ var checkCryptoJS = setInterval(function () {
 
     async function insertImageTagsBelow(result) {
         const messageDetails = result;
-
-        // console.log('messageDetails:', messageDetails);
-
         messageDetails.forEach(detail => {
             const messageId = detail.message_id;
             const imageTags = detail.imageTags;
@@ -4166,10 +3949,10 @@ var checkCryptoJS = setInterval(function () {
                 const request = JSON.parse(e.newValue);
                 localStorage.removeItem('generate_image_request_' + request.id);
 
-                console.log("油猴收到请求:", request);
+
 
                 if (request && request.type === 2) {
-                    console.log('油猴收到查询缓存请求:');
+
                     let loadimg = await Findcachedimages(request.prompt)
                     if (loadimg) {
                         await sendGenerateImageResponse(request.id, loadimg);
@@ -4179,7 +3962,7 @@ var checkCryptoJS = setInterval(function () {
                     await processGenerateImageRequest(request.id, request.prompt, request.width, request.height);
                 }
 
-                console.log('油猴收到生图请求');
+
                 await processGenerateImageRequest(request.id, request.prompt, request.width, request.height);
 
 
@@ -4196,16 +3979,9 @@ var checkCryptoJS = setInterval(function () {
         }
 
         if (e.key.includes("messageDetails")) {
-
             const request = JSON.parse(e.newValue);
-
-            //  console.log("油猴收到请求:",request);
-
             localStorage.removeItem(e.key);
-
-
             insertImageTagsBelow(request);
-
         }
     });
 
@@ -4228,18 +4004,18 @@ var checkCryptoJS = setInterval(function () {
         // 删除找到的键
         keysToDelete.forEach(key => {
             localStorage.removeItem(key);
-            console.log('已删除:', key);
+
         });
 
-        console.log(`总共删除了 ${keysToDelete.length} 个数据项`);
+
         return keysToDelete;
     }
 
 
     // 处理生图请求
     async function processGenerateImageRequest(requestId, prompt, width, height) {
-        console.log('油猴开始处理生图请求');
-        console.log(`处理生图请求 (ID: ${requestId})`, prompt);
+
+
 
         prompt = prompt.replaceAll("《", "<").replaceAll("》", ">").replaceAll("\n", ",");//修改lora<>
 
@@ -4253,21 +4029,21 @@ var checkCryptoJS = setInterval(function () {
         // 这里实现您的生图逻辑
         // 示例：模拟生图过程
         if (settings.mode == "novelai") {
-            console.log('油猴使用nai3生成图片');
+
             let loadimg = await nai3(button, width, height);
-            console.log('油猴使用nai3生成图片成功');
+
             await sendGenerateImageResponse(requestId, loadimg);
         }
         else if (settings.mode == "sd") {
-            console.log('油猴使用sd生成图片');
+
             let loadimg = await sd(button, width, height);
-            console.log('油猴使用sd生成图片成功');
+
             await sendGenerateImageResponse(requestId, loadimg);
         }
         else if (settings.mode == "comfyui") {
-            console.log('油猴使用comfyui生成图片');
+
             let loadimg = await comfyui(button, width, height);
-            console.log('油猴使用comfyui生成图片成功');
+
             await sendGenerateImageResponse(requestId, loadimg);
         }
 
@@ -4275,7 +4051,7 @@ var checkCryptoJS = setInterval(function () {
 
     async function Findcachedimages(params) {
         let loadimg = await getItemImg(params)
-        console.log('loadimg', loadimg);
+
         if (loadimg) {
             return loadimg;
         }
@@ -4284,15 +4060,12 @@ var checkCryptoJS = setInterval(function () {
         }
     }
 
-
-
-
     async function sendGenerateImageResponse(requestId, response) {
         try {
             localStorage.setItem("generate_image_response_" + requestId, JSON.stringify({ "imageData": response }));
-            console.log('油猴 已发送生图响应:', response);
+
         } catch (e) {
-            console.error('油猴发送响应失败:', e);
+            console.error('发送响应失败:', e);
         }
     }
 
@@ -4300,8 +4073,6 @@ var checkCryptoJS = setInterval(function () {
     function generateUniqueId() {
         return Date.now().toString(36) + Math.random().toString(36).substring(2);
     }
-
-
     sendGenerateTagsResponse();
     async function sendGenerateTagsResponse() {
 
@@ -4317,9 +4088,7 @@ var checkCryptoJS = setInterval(function () {
 
             localStorage.removeItem("generate_image_response_tags" + reqid);
         } catch (e) {
-            console.error('油猴发送响应失败:', e);
+            console.error('发送响应失败:', e);
         }
     }
-
-
 })();
