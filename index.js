@@ -868,39 +868,125 @@ var checkCryptoJS = setInterval(function() {
         panel.style.maxHeight = '80vh';
         let html = `
 <style>
-  #settings-panel input, #settings-panel select {
-    background-color: #444;
-    color: white;
-    background-color: black;
-    border: none;
-    padding: 5px;
-    margin: 5px 0;
-    white-space: nowrap;
+  #settings-panel {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border: 1px solid #444;
   }
-  .inline-elements div {
-  display: inline-block; /* 或者使用 display: flex; */
-  }
-  #settings-panel button {
-    background-color: #444;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  #settings-panel button:hover {
-    background-color: #555;
-  }
-  #previewImage {
-  width: 20vh; /* 将图片宽度设置为视口高度的 80% */
-  height: auto; /* 根据宽度自适应高度，保持图片比例 */
-  display: block; /* 将图片显示为块级元素，便于居中 */
-}
 
+  #settings-panel h2 {
+    color: #fff;
+    text-align: center;
+    margin-top: 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #444;
+  }
+
+  #settings-panel input, #settings-panel select, #settings-panel textarea {
+    background-color: rgba(60, 60, 60, 0.7);
+    color: #fff;
+    border: 1px solid #555;
+    padding: 8px 12px;
+    margin: 8px 0;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #settings-panel input:focus, #settings-panel select:focus, #settings-panel textarea:focus {
+    outline: none;
+    border-color: #888;
+    box-shadow: 0 0 5px rgba(100, 100, 100, 0.5);
+  }
+
+  .inline-elements {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+
+  #settings-panel button, .menu_button {
+    background-color: #555;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  #settings-panel button:hover, .menu_button:hover {
+    background-color: #777;
+    transform: translateY(-2px);
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #444;
+    transition: .4s;
+    border-radius: 24px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+
+  #previewImage {
+    width: 20vh;
+    height: auto;
+    display: block;
+    margin: 15px auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+  }
+
+  #previewImage:hover {
+    transform: scale(1.05);
+  }
 </style>
 `;
 
         html += `
-  <h2>设置面板</h2>
+  <h2>文生图设置面板</h2>
       <label class="switch">
     <input type="checkbox" id="scriptToggle" ${settings.scriptEnabled ? 'checked' : ''}>
     <span class="slider"></span>
