@@ -1,0 +1,14 @@
+
+{
+  "display_name": "酒馆文生图插件",
+  "name": "st_text_to_image",
+  "version": "1.0.0",
+  "author": "xfxaigc",
+  "description": "基于 NovelAI、Stable Diffusion 和 ComfyUI 的图片生成插件",
+  "loading_order": 100,
+  "js": "index.js",
+  "css": "",
+  "requires": [],
+  "settings": [
+  ]
+}
