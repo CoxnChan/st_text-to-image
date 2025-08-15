@@ -11,7 +11,6 @@ var checkCryptoJS = setInterval(function () {
     }
 }, 100);
 
-//开启脚本后点击酒馆左下角的三条杠，文生图设置。
 (function () {
     'use strict';
     // 添加兼容性处理
