@@ -7,7 +7,6 @@ document.head.appendChild(script);
 var checkCryptoJS = setInterval(function () {
     if (typeof CryptoJS !== 'undefined') {
         clearInterval(checkCryptoJS);
-        initScript();
     }
 }, 100);
 
@@ -856,10 +855,11 @@ var checkCryptoJS = setInterval(function () {
     border-radius: 12px;
     min-width: 250px;
     border: 1px solid #444;
-    background-color: var(--SmartThemeBlurTintColor);
+    background-color: var(--SmartThemeBlurTintColor) / 45%;
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
     color: var(--SmartThemeBodyColor);
   }
-
   #settings-panel h2 {
     text-align: center;
     margin-top: 0;
